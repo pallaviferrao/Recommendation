@@ -138,3 +138,23 @@ for epoch in range(num_epochs):
     print(f"Epoch {epoch + 1}/{num_epochs}, Training Loss: {loss.item()}, Validation Loss: {val_loss.item()}")
 
     torch.save(neumf_model, 'final_neumf_model.pth')
+
+
+
+model_path = 'final_neumf_model.pth'
+model_state_dict = torch.load(model_path)
+
+# Create an instance of the NeuMF model
+model = NeuMF(num_users, num_movies, embedding_size, hidden_sizes)
+model.eval()
+
+# Example
+for i in range (20):
+  user_id = torch.tensor([i])
+  movie_id = torch.tensor([15])
+
+  # Make a prediction
+  with torch.no_grad():
+    prediction = model(user_id, movie_id, max_rating, min_rating)
+
+  print(f'User {i} has a Predicted Rating: {prediction.item()}')
